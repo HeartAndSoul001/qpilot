@@ -1,35 +1,34 @@
 <template>
-  <div class="ip-converter">
-    <h2>IP格式转换</h2>
-    <div class="input-group">
-      <input type="text" v-model="input" placeholder="请输入IP地址" />
-      <select v-model="convertType">
-        <option value="dec2bin">十进制转二进制</option>
-        <option value="bin2dec">二进制转十进制</option>
-      </select>
-      <button @click="convert">转换</button>
-    </div>
-    <div class="result" v-if="result">
-      <p>转换结果：{{ result }}</p>
-    </div>
-  </div>
+  <n-card title="IP格式转换" class="full-height">
+    <n-space vertical>
+      <n-input v-model:value="input" placeholder="请输入IP地址" />
+      <n-select
+        v-model:value="convertType"
+        :options="[
+          { label: '十进制转二进制', value: 'dec2bin' },
+          { label: '二进制转十进制', value: 'bin2dec' }
+        ]"
+      />
+      <n-button type="primary" @click="convert">转换</n-button>
+      
+      <n-collapse-transition :show="!!result">
+        <n-alert v-if="result" type="success">
+          转换结果：{{ result }}
+        </n-alert>
+      </n-collapse-transition>
+    </n-space>
+  </n-card>
 </template>
 
-<script>
-export default {
-  name: 'IPConverter',
-  data() {
-    return {
-      input: '',
-      convertType: 'dec2bin',
-      result: null
-    }
-  },
-  methods: {
-    convert() {
-      // TODO: 实现转换逻辑
-    }
-  }
+<script setup>
+import { ref } from 'vue'
+
+const input = ref('')
+const convertType = ref('dec2bin')
+const result = ref(null)
+
+function convert() {
+  // TODO: 实现转换逻辑
 }
 </script>
 
@@ -45,5 +44,18 @@ export default {
 }
 .result {
   margin-top: 20px;
+}
+
+.full-height {
+  height: calc(100vh - 40px);
+  box-sizing: border-box;
+}
+
+:deep(.n-card-body) {
+  height: calc(100% - 50px);
+}
+
+:deep(.n-space) {
+  min-height: 100%;
 }
 </style>

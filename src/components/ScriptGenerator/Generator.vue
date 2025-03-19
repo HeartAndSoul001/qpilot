@@ -1,50 +1,60 @@
 <template>
-  <div class="script-generator">
-    <h2>脚本生成器</h2>
-    <div class="input-group">
-      <select v-model="scriptType">
-        <option value="backup">备份脚本</option>
-        <option value="monitor">监控脚本</option>
-        <option value="config">配置脚本</option>
-      </select>
-      <div class="parameters">
-        <h3>参数设置：</h3>
-        <div v-if="scriptType === 'backup'">
-          <!-- 备份脚本参数 -->
-          <input type="text" v-model="backupPath" placeholder="备份路径" />
-          <input type="text" v-model="backupInterval" placeholder="备份间隔" />
-        </div>
-        <!-- 其他类型的参数设置 -->
-      </div>
-      <button @click="generateScript">生成脚本</button>
-    </div>
-    <div class="result" v-if="result">
-      <h3>生成的脚本：</h3>
-      <pre><code>{{ result }}</code></pre>
-      <button @click="copyScript">复制脚本</button>
-    </div>
-  </div>
+  <n-card title="脚本生成器" class="full-height">
+    <n-space vertical>
+      <n-select
+        v-model:value="scriptType"
+        :options="[
+          { label: '备份脚本', value: 'backup' },
+          { label: '监控脚本', value: 'monitor' },
+          { label: '配置脚本', value: 'config' }
+        ]"
+      />
+      
+      <n-card title="参数设置" v-if="scriptType === 'backup'">
+        <n-form>
+          <n-form-item label="备份路径">
+            <n-input v-model:value="backupPath" placeholder="请输入备份路径" />
+          </n-form-item>
+          <n-form-item label="备份间隔">
+            <n-input v-model:value="backupInterval" placeholder="请输入备份间隔" />
+          </n-form-item>
+        </n-form>
+      </n-card>
+      
+      <n-button type="primary" @click="generateScript">生成脚本</n-button>
+      
+      <n-collapse-transition :show="!!result">
+        <n-card v-if="result" title="生成的脚本">
+          <n-code :code="result" />
+          <n-button 
+            type="primary" 
+            ghost 
+            style="margin-top: 16px"
+            @click="copyScript"
+          >
+            复制脚本
+          </n-button>
+        </n-card>
+      </n-collapse-transition>
+    </n-space>
+  </n-card>
 </template>
 
-<script>
-export default {
-  name: 'Generator',
-  data() {
-    return {
-      scriptType: 'backup',
-      backupPath: '',
-      backupInterval: '',
-      result: null
-    }
-  },
-  methods: {
-    generateScript() {
-      // TODO: 实现脚本生成逻辑
-    },
-    copyScript() {
-      // TODO: 实现复制功能
-    }
-  }
+<script setup>
+import { ref } from 'vue'
+
+const scriptType = ref('backup')
+const backupPath = ref('')
+const backupInterval = ref('')
+const result = ref(null)
+
+function generateScript() {
+  // TODO: 实现脚本生成逻辑
+}
+
+function copyScript() {
+  // TODO: 实现复制功能
+  navigator.clipboard.writeText(result.value)
 }
 </script>
 
@@ -70,5 +80,22 @@ export default {
 }
 .result button {
   margin-top: 10px;
+}
+.full-height {
+  height: calc(100vh - 40px);
+  box-sizing: border-box;
+}
+
+:deep(.n-card-body) {
+  height: calc(100% - 50px);
+}
+
+:deep(.n-space) {
+  min-height: 100%;
+}
+
+:deep(.n-code) {
+  flex: 1;
+  min-height: 200px;
 }
 </style>

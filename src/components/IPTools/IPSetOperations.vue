@@ -1,39 +1,56 @@
 <template>
-  <div class="ip-set-operations">
-    <h2>IP集合运算</h2>
-    <div class="input-group">
-      <textarea v-model="setA" placeholder="请输入第一组IP地址，每行一个"></textarea>
-      <textarea v-model="setB" placeholder="请输入第二组IP地址，每行一个"></textarea>
-      <select v-model="operation">
-        <option value="union">并集</option>
-        <option value="intersection">交集</option>
-        <option value="difference">差集</option>
-      </select>
-      <button @click="calculate">计算</button>
-    </div>
-    <div class="result" v-if="result">
-      <h3>计算结果：</h3>
-      <textarea readonly v-model="result"></textarea>
-    </div>
-  </div>
+  <n-card title="IP集合运算" class="full-height">
+    <n-space vertical>
+      <n-input-group>
+        <n-input
+          type="textarea"
+          v-model:value="setA"
+          placeholder="请输入第一组IP地址，每行一个"
+          :rows="6"
+        />
+        <n-input
+          type="textarea"
+          v-model:value="setB"
+          placeholder="请输入第二组IP地址，每行一个"
+          :rows="6"
+        />
+      </n-input-group>
+      
+      <n-select
+        v-model:value="operation"
+        :options="[
+          { label: '并集', value: 'union' },
+          { label: '交集', value: 'intersection' },
+          { label: '差集', value: 'difference' }
+        ]"
+      />
+      
+      <n-button type="primary" @click="calculate">计算</n-button>
+      
+      <n-collapse-transition :show="!!result">
+        <n-card v-if="result" title="计算结果">
+          <n-input
+            type="textarea"
+            v-model:value="result"
+            readonly
+            :rows="8"
+          />
+        </n-card>
+      </n-collapse-transition>
+    </n-space>
+  </n-card>
 </template>
 
-<script>
-export default {
-  name: 'IPSetOperations',
-  data() {
-    return {
-      setA: '',
-      setB: '',
-      operation: 'union',
-      result: null
-    }
-  },
-  methods: {
-    calculate() {
-      // TODO: 实现集合运算逻辑
-    }
-  }
+<script setup>
+import { ref } from 'vue'
+
+const setA = ref('')
+const setB = ref('')
+const operation = ref('union')
+const result = ref(null)
+
+function calculate() {
+  // TODO: 实现集合运算逻辑
 }
 </script>
 
@@ -58,5 +75,28 @@ export default {
   width: 100%;
   height: 150px;
   margin-top: 10px;
+}
+
+.full-height {
+  height: calc(100vh - 40px);
+  box-sizing: border-box;
+}
+
+:deep(.n-card-body) {
+  height: calc(100% - 50px);
+}
+
+:deep(.n-space) {
+  min-height: 100%;
+}
+
+:deep(.n-input-group) {
+  display: flex;
+  gap: 16px;
+  flex: 1;
+}
+
+:deep(.n-input) {
+  flex: 1;
 }
 </style>

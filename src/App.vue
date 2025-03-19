@@ -31,33 +31,31 @@ export default {
 #app {
   display: flex;
   height: 100vh;
+  width: 100vw;
+  overflow: hidden;
 }
 
 .content {
   flex: 1;
   padding: 20px;
-  overflow-y: auto;
+  overflow: auto;
+  height: 100vh;
+  box-sizing: border-box;
+  background-color: #f6f6f6;
 }
 
-/* 基础表单样式 */
-input,
-button,
-select,
-textarea {
-  border-radius: 4px;
-  border: 1px solid #ddd;
-  padding: 8px 12px;
-  font-size: 14px;
+:deep(.n-card) {
+  margin: 0;
+  height: 100%;
 }
 
-button {
-  cursor: pointer;
-  background-color: #4a9eff;
-  color: white;
-  border: none;
+:deep(.n-card-body) {
+  height: calc(100% - 50px);
+  display: flex;
+  flex-direction: column;
 }
 
-button:hover {
-  background-color: #3a8eef;
+:deep(.n-space) {
+  height: 100%;
 }
 </style>
